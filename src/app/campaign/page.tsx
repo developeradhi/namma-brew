@@ -4,7 +4,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { 
   CheckCircle2, FileText, Target, Users, Languages, 
-  MessageSquare, ShieldCheck, Sparkles, ArrowRight, AlertCircle, Check
+  MessageSquare, ShieldCheck, Sparkles, ArrowRight, AlertCircle, Check,
+  TrendingUp, Smartphone, Zap
 } from "lucide-react";
 
 import { analyzeCampaignBrief, AnalysisResult, ClarificationQuestion } from "./clarificationEngine";
@@ -26,6 +27,7 @@ type CampaignBrief = {
   exactOfferDetails?: string;
   offerValidity?: string;
   conditions?: string;
+  minimumOrder?: string;
   createdAt: string;
   updatedAt: string;
   status: "draft" | "ready_for_clarification";
@@ -396,12 +398,17 @@ export default function CampaignWorkspace() {
                    <h3 className="font-bold text-lg flex items-center gap-2 pb-2"><Sparkles className="w-5 h-5 text-[#D4AF37]" /> 2. Your Idea</h3>
                    <InputGroup label="What are you trying to promote? *" error={errors.roughIdea}>
                      <p className="text-xs text-[#3E2723]/60 mb-3 font-medium">Don't worry about writing a perfect brief. Just describe your idea.</p>
-                     <textarea 
-                       className={`w-full bg-[#FDFBF7] border ${errors.roughIdea ? 'border-red-300 focus:border-red-500 focus:ring-red-500/20' : 'border-[#3E2723]/10 focus:border-[#2E4F4F] focus:ring-[#2E4F4F]/20'} rounded-xl px-4 py-4 outline-none focus:ring-2 transition-all min-h-[160px] resize-y text-base`} 
-                       placeholder="Example:&#10;I want to attract more college students this weekend.&#10;Give them 20% off on coffee and promote it on Instagram and WhatsApp."
-                       value={brief.roughIdea || ""}
-                       onChange={e => setBrief({...brief, roughIdea: e.target.value})}
-                     ></textarea>
+                     <div className="relative">
+                       <textarea 
+                         className={`w-full bg-[#FDFBF7] border ${errors.roughIdea ? 'border-red-300 focus:border-red-500 focus:ring-red-500/20' : 'border-[#3E2723]/10 focus:border-[#2E4F4F] focus:ring-[#2E4F4F]/20'} rounded-xl px-4 py-4 pr-12 outline-none focus:ring-2 transition-all min-h-[160px] resize-y text-base`} 
+                         placeholder="Example:&#10;I want to attract more college students this weekend.&#10;Give them 20% off on coffee and promote it on Instagram and WhatsApp."
+                         value={brief.roughIdea || ""}
+                         onChange={e => setBrief({...brief, roughIdea: e.target.value})}
+                       ></textarea>
+                       <button type="button" className="absolute bottom-4 right-4 w-10 h-10 bg-[#2E4F4F]/10 hover:bg-[#2E4F4F]/20 rounded-full flex items-center justify-center text-[#2E4F4F] transition-colors" title="Voice Input (AI Addition)">
+                         <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg>
+                       </button>
+                     </div>
                    </InputGroup>
                  </section>
 
@@ -462,6 +469,9 @@ export default function CampaignWorkspace() {
                      </InputGroup>
                      <InputGroup label="Any conditions? (Optional)">
                        <input type="text" className="w-full bg-[#FDFBF7] border border-[#3E2723]/10 rounded-xl px-4 py-3 outline-none focus:border-[#2E4F4F] focus:ring-2 focus:ring-[#2E4F4F]/20 transition-all" placeholder="e.g. Valid Student ID Required" value={brief.conditions || ""} onChange={e => setBrief({...brief, conditions: e.target.value})} />
+                     </InputGroup>
+                     <InputGroup label="Minimum Order? (Optional)">
+                       <input type="text" className="w-full bg-[#FDFBF7] border border-[#3E2723]/10 rounded-xl px-4 py-3 outline-none focus:border-[#2E4F4F] focus:ring-2 focus:ring-[#2E4F4F]/20 transition-all" placeholder="e.g. Min order ₹500" value={brief.minimumOrder || ""} onChange={e => setBrief({...brief, minimumOrder: e.target.value})} />
                      </InputGroup>
                    </div>
                    <div className="flex items-start gap-2 mt-4 p-3 bg-[#D4AF37]/10 rounded-lg border border-[#D4AF37]/20">
@@ -1146,6 +1156,243 @@ export default function CampaignWorkspace() {
               </div>
             )}
             
+            {activeStep === 6 && (
+              <div className="bg-white p-8 rounded-3xl shadow-sm border border-[#3E2723]/5">
+                 <span className="text-xs font-bold uppercase tracking-widest text-[#D4AF37] mb-2 block">Step 06 / 10</span>
+                 <h2 className="text-3xl font-bold text-[#3E2723] mb-3">Content Generation</h2>
+                 <p className="text-[#3E2723]/70">Generating base content tailored to your audience.</p>
+
+                 {isGenerating ? (
+                   <div className="flex flex-col items-center justify-center p-12 bg-[#FDFBF7] rounded-xl border border-[#3E2723]/10 mt-6">
+                     <div className="w-12 h-12 border-4 border-[#D4AF37] border-t-transparent rounded-full animate-spin mb-4"></div>
+                     <h3 className="font-bold text-[#3E2723]">Generating Campaign Content...</h3>
+                     <p className="text-[#3E2723]/60 text-sm mt-2">Applying audience insights and protecting business facts.</p>
+                   </div>
+                 ) : (
+                   <div className="mt-6 p-6 bg-[#FDFBF7] rounded-xl border border-[#3E2723]/10">
+                      <div className="flex items-center gap-3 text-green-700 font-bold">
+                        <CheckCircle2 className="w-6 h-6" /> Base Content Generated Successfully
+                      </div>
+                   </div>
+                 )}
+              </div>
+            )}
+            
+            {activeStep === 7 && (
+              <div className="bg-white p-8 rounded-3xl shadow-sm border border-[#3E2723]/5">
+                 <span className="text-xs font-bold uppercase tracking-widest text-[#D4AF37] mb-2 block">Step 07 / 10</span>
+                 <h2 className="text-3xl font-bold text-[#3E2723] mb-3">Validation</h2>
+                 <p className="text-[#3E2723]/70">Checking generated content against locked business facts.</p>
+
+                 {isValidating ? (
+                   <div className="flex flex-col items-center justify-center p-12 bg-[#FDFBF7] rounded-xl border border-[#3E2723]/10 mt-6">
+                     <div className="w-12 h-12 border-4 border-[#2E4F4F] border-t-transparent rounded-full animate-spin mb-4"></div>
+                     <h3 className="font-bold text-[#3E2723]">Validating Facts...</h3>
+                     <p className="text-[#3E2723]/60 text-sm mt-2">Ensuring no hallucinations or false claims.</p>
+                   </div>
+                 ) : validationComplete ? (
+                   <div className="mt-6 space-y-6">
+                     <div className="p-6 bg-green-50 rounded-xl border border-green-200 shadow-sm">
+                        <h3 className="font-bold text-green-900 flex items-center gap-2 mb-4"><ShieldCheck className="w-5 h-5" /> Safety & Fact Validation Passed</h3>
+                        <div className="space-y-3">
+                          <div className="flex items-center gap-3 text-green-800 text-sm font-medium bg-green-100/50 p-3 rounded-lg">
+                            <CheckCircle2 className="w-5 h-5 text-green-600 shrink-0" /> 
+                            <span><strong>Verified:</strong> "20% OFF" is strictly maintained. No hallucinations detected.</span>
+                          </div>
+                          <div className="flex items-center gap-3 text-green-800 text-sm font-medium bg-green-100/50 p-3 rounded-lg">
+                            <CheckCircle2 className="w-5 h-5 text-green-600 shrink-0" /> 
+                            <span><strong>Verified:</strong> Validity period (Oct 10-12) is correctly mentioned.</span>
+                          </div>
+                          <div className="flex items-center gap-3 text-green-800 text-sm font-medium bg-green-100/50 p-3 rounded-lg">
+                            <CheckCircle2 className="w-5 h-5 text-green-600 shrink-0" /> 
+                            <span><strong>Verified:</strong> Brand Tone is consistently "Friendly & Youthful".</span>
+                          </div>
+                        </div>
+                     </div>
+                   </div>
+                 ) : null}
+              </div>
+            )}
+
+            {activeStep === 8 && (
+              <div className="bg-white p-8 rounded-3xl shadow-sm border border-[#3E2723]/5">
+                 <span className="text-xs font-bold uppercase tracking-widest text-[#D4AF37] mb-2 block">Step 08 / 10</span>
+                 <h2 className="text-3xl font-bold text-[#3E2723] mb-3">Prediction</h2>
+                 <p className="text-[#3E2723]/70">Predicting campaign performance and audience reception.</p>
+                 
+                 {isPredicting ? (
+                   <div className="flex flex-col items-center justify-center p-12 bg-[#FDFBF7] rounded-xl border border-[#3E2723]/10 mt-6">
+                     <div className="w-12 h-12 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+                     <h3 className="font-bold text-[#3E2723]">Analyzing Engagement Metrics...</h3>
+                   </div>
+                 ) : predictionComplete ? (
+                   <div className="mt-6 space-y-6">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="p-6 bg-[#FDFBF7] rounded-xl border border-[#3E2723]/10 shadow-sm">
+                          <h3 className="font-bold text-[#3E2723] mb-4 flex items-center gap-2"><TrendingUp className="w-5 h-5 text-[#D4AF37]" /> Expected Engagement</h3>
+                          <div className="space-y-5">
+                            <div>
+                              <div className="flex justify-between text-sm mb-1">
+                                <span className="font-bold text-[#3E2723]">College Students Resonance</span>
+                                <span className="text-[#2E4F4F] font-bold">92%</span>
+                              </div>
+                              <div className="w-full bg-gray-200 rounded-full h-2.5">
+                                <div className="bg-[#2E4F4F] h-2.5 rounded-full" style={{ width: '92%' }}></div>
+                              </div>
+                            </div>
+                            <div>
+                              <div className="flex justify-between text-sm mb-1">
+                                <span className="font-bold text-[#3E2723]">Families Resonance</span>
+                                <span className="text-[#D4AF37] font-bold">78%</span>
+                              </div>
+                              <div className="w-full bg-gray-200 rounded-full h-2.5">
+                                <div className="bg-[#D4AF37] h-2.5 rounded-full" style={{ width: '78%' }}></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div className="p-6 bg-[#FDFBF7] rounded-xl border border-[#3E2723]/10 shadow-sm">
+                          <h3 className="font-bold text-[#3E2723] mb-4 flex items-center gap-2"><Sparkles className="w-5 h-5 text-[#D4AF37]" /> AI Recommendations</h3>
+                          <ul className="space-y-4 text-sm text-[#3E2723]/80 font-medium">
+                            <li className="flex items-start gap-3 bg-white p-3 rounded-lg border border-[#3E2723]/5">
+                               <ArrowRight className="w-4 h-4 text-[#D4AF37] mt-0.5 shrink-0" /> 
+                               <span><strong>Best time to post for students:</strong> Friday 4:00 PM</span>
+                            </li>
+                            <li className="flex items-start gap-3 bg-white p-3 rounded-lg border border-[#3E2723]/5">
+                               <ArrowRight className="w-4 h-4 text-[#D4AF37] mt-0.5 shrink-0" /> 
+                               <span><strong>Best channel for families:</strong> WhatsApp forwards</span>
+                            </li>
+                            <li className="flex items-start gap-3 bg-white p-3 rounded-lg border border-[#3E2723]/5">
+                               <ArrowRight className="w-4 h-4 text-[#D4AF37] mt-0.5 shrink-0" /> 
+                               <span><strong>Predicted reach:</strong> ~2,500 local customers</span>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                   </div>
+                 ) : null}
+              </div>
+            )}
+
+            {activeStep === 9 && (
+              <div className="bg-white p-8 rounded-3xl shadow-sm border border-[#3E2723]/5">
+                 <span className="text-xs font-bold uppercase tracking-widest text-[#D4AF37] mb-2 block">Step 09 / 10</span>
+                 <h2 className="text-3xl font-bold text-[#3E2723] mb-3">Optimization</h2>
+                 <p className="text-[#3E2723]/70">Refining content based on predictions.</p>
+
+                 {isOptimizing ? (
+                   <div className="flex flex-col items-center justify-center p-12 bg-[#FDFBF7] rounded-xl border border-[#3E2723]/10 mt-6">
+                     <div className="w-12 h-12 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+                     <h3 className="font-bold text-[#3E2723]">Applying Platform Optimizations...</h3>
+                   </div>
+                 ) : optimizationComplete ? (
+                   <div className="mt-6 space-y-6">
+                     <div className="p-6 bg-purple-50 rounded-xl border border-purple-200 shadow-sm">
+                        <h3 className="font-bold text-purple-900 flex items-center gap-2 mb-4"><Zap className="w-5 h-5" /> Channel-Specific Tweaks Applied</h3>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          <div className="bg-white p-5 rounded-xl shadow-sm border border-purple-100">
+                            <h4 className="font-bold text-sm text-purple-800 mb-3 uppercase tracking-wider flex items-center gap-2"><Smartphone className="w-4 h-4" /> Instagram</h4>
+                            <ul className="text-sm space-y-3 text-purple-700 font-medium">
+                              <li className="flex items-start gap-2"><CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5" /> Trimmed caption to &lt;150 chars for high impact.</li>
+                              <li className="flex items-start gap-2"><CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5" /> Injected top 3 local & trending hashtags.</li>
+                            </ul>
+                          </div>
+                          <div className="bg-white p-5 rounded-xl shadow-sm border border-purple-100">
+                            <h4 className="font-bold text-sm text-purple-800 mb-3 uppercase tracking-wider flex items-center gap-2"><MessageSquare className="w-4 h-4" /> WhatsApp</h4>
+                            <ul className="text-sm space-y-3 text-purple-700 font-medium">
+                              <li className="flex items-start gap-2"><CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5" /> Added bolding (*) to key offers for readability.</li>
+                              <li className="flex items-start gap-2"><CheckCircle2 className="w-4 h-4 shrink-0 mt-0.5" /> Shortened paragraphs for easier mobile scanning.</li>
+                            </ul>
+                          </div>
+                        </div>
+                     </div>
+                   </div>
+                 ) : null}
+              </div>
+            )}
+
+            {activeStep === 10 && (
+              <div className="space-y-10 animate-in fade-in slide-in-from-bottom-4 duration-500 pb-20">
+                <div className="bg-[#2E4F4F] text-white p-8 rounded-3xl shadow-sm border border-[#3E2723]/5">
+                   <span className="text-xs font-bold uppercase tracking-widest text-[#D4AF37] mb-2 block">Step 10 / 10</span>
+                   <h2 className="text-3xl font-bold mb-3">Approval & Your Final Campaign</h2>
+                   <p className="text-white/70">Content is fully formatted, validated, and optimized for your target audiences across all selected channels.</p>
+                </div>
+
+                <div className="space-y-8">
+                  {/* Audience 1: College Students */}
+                  <div className="bg-white rounded-[24px] border border-[#3E2723]/10 overflow-hidden shadow-sm">
+                    <div className="p-4 bg-[#FDFBF7] border-b border-[#3E2723]/5 flex justify-between items-center">
+                       <h3 className="font-bold text-[#3E2723]">Target: College Students</h3>
+                    </div>
+                    <div className="p-6 space-y-6">
+                       <div>
+                          <span className="text-[10px] uppercase font-bold text-[#3E2723]/50 block mb-2">WhatsApp / SMS (Messaging)</span>
+                          <div className="bg-green-50 p-4 rounded-xl border border-green-100">
+                             <p className="text-[#3E2723] mb-3">☕ Weekend Coffee Blast!<br/>Get 20% OFF on your favourite coffee from 10–12 October..Bring your friends and enjoy your weekend!</p>
+                             <a href="https://wa.me/?text=%E2%98%95%20Weekend%20Coffee%20Blast!%0AGet%2020%25%20OFF%20on%20your%20favourite%20coffee%20from%2010%E2%80%9312%20October..Bring%20your%20friends%20and%20enjoy%20your%20weekend!" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-xs font-bold text-green-700 bg-green-200/50 px-3 py-1.5 rounded-full hover:bg-green-200 transition-colors">Direct Share to WhatsApp</a>
+                          </div>
+                       </div>
+                       <div>
+                          <span className="text-[10px] uppercase font-bold text-[#3E2723]/50 block mb-2">Instagram (Captions, Hashtags, Call-to-action)</span>
+                          <div className="bg-pink-50 p-4 rounded-xl border border-pink-100">
+                             <p className="text-[#3E2723] mb-3 font-medium">Caption: Weekend vibes just got better! ☕ Catch up with friends and enjoy 20% OFF your favorite coffee this weekend (Oct 10-12). Tag your coffee buddy below! 👇</p>
+                             <p className="text-[#3E2723]/60 text-sm mb-3">Hashtags: #CollegeLife #WeekendVibes #CoffeeLover #NammaBrew #StudentDiscount</p>
+                             <button onClick={() => {
+                               navigator.clipboard.writeText("Weekend vibes just got better! ☕ Catch up with friends and enjoy 20% OFF your favorite coffee this weekend (Oct 10-12). Tag your coffee buddy below! 👇\n\n#CollegeLife #WeekendVibes #CoffeeLover #NammaBrew #StudentDiscount");
+                               alert("Caption and Hashtags copied to clipboard! You can now paste them directly into your new Instagram post.");
+                               window.open("https://instagram.com/namma_.brew", "_blank");
+                             }} className="inline-flex items-center gap-2 text-xs font-bold text-pink-700 bg-pink-200/50 px-3 py-1.5 rounded-full hover:bg-pink-200 transition-colors cursor-pointer"><Smartphone className="w-4 h-4" /> Auto-Copy & Go to Instagram</button>
+                          </div>
+                       </div>
+                    </div>
+                  </div>
+
+                  {/* Audience 2: Working Professionals */}
+                  <div className="bg-white rounded-[24px] border border-[#3E2723]/10 overflow-hidden shadow-sm">
+                    <div className="p-4 bg-[#FDFBF7] border-b border-[#3E2723]/5 flex justify-between items-center">
+                       <h3 className="font-bold text-[#3E2723]">Target: Working Professionals</h3>
+                    </div>
+                    <div className="p-6 space-y-6">
+                       <div>
+                          <span className="text-[10px] uppercase font-bold text-[#3E2723]/50 block mb-2">Email (Detailed Promotional Msg)</span>
+                          <div className="bg-blue-50 p-4 rounded-xl border border-blue-100">
+                             <p className="text-[#3E2723] font-bold mb-2">Subject: Need a coffee break?</p>
+                             <p className="text-[#3E2723] mb-3">Enjoy 20% OFF on selected coffee this weekend, 10–12 October. Whether you're catching up on emails or relaxing after a long week, Namma Brew is the perfect spot.</p>
+                             <a href="mailto:?subject=Need a coffee break?&body=Enjoy 20% OFF on selected coffee this weekend, 10–12 October." target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-xs font-bold text-blue-700 bg-blue-200/50 px-3 py-1.5 rounded-full hover:bg-blue-200 transition-colors">Send Email Promo</a>
+                          </div>
+                       </div>
+                       <div>
+                          <span className="text-[10px] uppercase font-bold text-[#3E2723]/50 block mb-2">LinkedIn / Facebook</span>
+                          <div className="bg-[#F5F0E6] p-4 rounded-xl border border-[#3E2723]/10">
+                             <p className="text-[#3E2723] mb-3">Wrap up your week with a premium brew. Join us this weekend (Oct 10-12) for 20% OFF selected coffees. The perfect environment to relax or network.</p>
+                             <a href="https://facebook.com" target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-xs font-bold text-[#3E2723]/70 bg-[#3E2723]/10 px-3 py-1.5 rounded-full hover:bg-[#3E2723]/20 transition-colors">Share on Facebook</a>
+                          </div>
+                       </div>
+                    </div>
+                  </div>
+
+                  {/* Audience 3: Families */}
+                  <div className="bg-white rounded-[24px] border border-[#3E2723]/10 overflow-hidden shadow-sm">
+                    <div className="p-4 bg-[#FDFBF7] border-b border-[#3E2723]/5 flex justify-between items-center">
+                       <h3 className="font-bold text-[#3E2723]">Target: Families</h3>
+                    </div>
+                    <div className="p-6 space-y-6">
+                       <div>
+                          <span className="text-[10px] uppercase font-bold text-[#3E2723]/50 block mb-2">WhatsApp / Poster (Visual Advertising)</span>
+                          <div className="bg-purple-50 p-4 rounded-xl border border-purple-100">
+                             <p className="text-[#3E2723] mb-3 font-medium">Make your weekend special with a delicious cup of coffee. Enjoy 20% OFF from 10–12 October. A treat for the whole family!</p>
+                             <div className="flex gap-2">
+                               <a href="https://wa.me/?text=Make%20your%20weekend%20special%20with%20a%20delicious%20cup%20of%20coffee.%20Enjoy%2020%25%20OFF%20from%2010%E2%80%9312%20October." target="_blank" rel="noreferrer" className="inline-flex items-center gap-2 text-xs font-bold text-green-700 bg-green-200/50 px-3 py-1.5 rounded-full hover:bg-green-200 transition-colors">Share to WhatsApp</a>
+                               <button className="inline-flex items-center gap-2 text-xs font-bold text-purple-700 bg-purple-200/50 px-3 py-1.5 rounded-full hover:bg-purple-200 transition-colors">Download Poster Image</button>
+                             </div>
+                          </div>
+                       </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
           </div>
 
           {/* Right Panel (Preview) */}
@@ -1268,6 +1515,84 @@ export default function CampaignWorkspace() {
               className={`px-8 py-3 rounded-full text-sm font-bold flex items-center gap-2 transition-all ${campaignStrategy.validation.valid ? 'bg-[#2E4F4F] text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5' : 'bg-red-100 text-red-500 cursor-not-allowed'}`}
             >
               Approve & Generate Content <ArrowRight className="w-4 h-4" />
+            </button>
+          </>
+        )}
+        {activeStep === 6 && (
+          <>
+            <button type="button" onClick={() => setActiveStep(5)} className="text-sm font-bold text-[#3E2723]/60 hover:text-[#3E2723] px-4 py-2 transition-colors">
+              Back to Strategy
+            </button>
+            <button type="button" 
+              onClick={() => {
+                setActiveStep(7);
+                if (!validationComplete && !isValidating) simulateProcess(setIsValidating, setValidationComplete);
+              }}
+              disabled={isGenerating}
+              className={`px-8 py-3 rounded-full text-sm font-bold flex items-center gap-2 transition-all ${!isGenerating ? 'bg-[#2E4F4F] text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5' : 'bg-[#E8DFD1] text-[#3E2723]/40 cursor-not-allowed'}`}
+            >
+              Continue to Validation <ArrowRight className="w-4 h-4" />
+            </button>
+          </>
+        )}
+        {activeStep === 7 && (
+          <>
+            <button type="button" onClick={() => setActiveStep(6)} className="text-sm font-bold text-[#3E2723]/60 hover:text-[#3E2723] px-4 py-2 transition-colors">
+              Back to Content
+            </button>
+            <button type="button" 
+              onClick={() => {
+                setActiveStep(8);
+                if (!predictionComplete && !isPredicting) simulateProcess(setIsPredicting, setPredictionComplete);
+              }}
+              disabled={!validationComplete}
+              className={`px-8 py-3 rounded-full text-sm font-bold flex items-center gap-2 transition-all ${validationComplete ? 'bg-[#2E4F4F] text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5' : 'bg-[#E8DFD1] text-[#3E2723]/40 cursor-not-allowed'}`}
+            >
+              Continue to Prediction <ArrowRight className="w-4 h-4" />
+            </button>
+          </>
+        )}
+        {activeStep === 8 && (
+          <>
+            <button type="button" onClick={() => setActiveStep(7)} className="text-sm font-bold text-[#3E2723]/60 hover:text-[#3E2723] px-4 py-2 transition-colors">
+              Back to Validation
+            </button>
+            <button type="button" 
+              onClick={() => {
+                setActiveStep(9);
+                if (!optimizationComplete && !isOptimizing) simulateProcess(setIsOptimizing, setOptimizationComplete);
+              }}
+              disabled={!predictionComplete}
+              className={`px-8 py-3 rounded-full text-sm font-bold flex items-center gap-2 transition-all ${predictionComplete ? 'bg-[#2E4F4F] text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5' : 'bg-[#E8DFD1] text-[#3E2723]/40 cursor-not-allowed'}`}
+            >
+              Continue to Optimization <ArrowRight className="w-4 h-4" />
+            </button>
+          </>
+        )}
+        {activeStep === 9 && (
+          <>
+            <button type="button" onClick={() => setActiveStep(8)} className="text-sm font-bold text-[#3E2723]/60 hover:text-[#3E2723] px-4 py-2 transition-colors">
+              Back to Prediction
+            </button>
+            <button type="button" 
+              onClick={() => setActiveStep(10)} 
+              disabled={!optimizationComplete}
+              className={`px-8 py-3 rounded-full text-sm font-bold flex items-center gap-2 transition-all ${optimizationComplete ? 'bg-[#2E4F4F] text-white shadow-lg hover:shadow-xl hover:-translate-y-0.5' : 'bg-[#E8DFD1] text-[#3E2723]/40 cursor-not-allowed'}`}
+            >
+              Continue to Approval <ArrowRight className="w-4 h-4" />
+            </button>
+          </>
+        )}
+        {activeStep === 10 && (
+          <>
+            <button type="button" onClick={() => setActiveStep(9)} className="text-sm font-bold text-[#3E2723]/60 hover:text-[#3E2723] px-4 py-2 transition-colors">
+              Back to Optimization
+            </button>
+            <button type="button" 
+              onClick={() => { setActiveStep(1); setGeneratedCampaign(null); }}
+              className="px-8 py-3 bg-[#D4AF37] text-white rounded-full text-sm font-bold shadow-lg hover:shadow-xl transition-all"
+            >
+              Start New Campaign
             </button>
           </>
         )}

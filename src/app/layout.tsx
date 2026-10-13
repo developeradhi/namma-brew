@@ -21,10 +21,10 @@ const caveat = Caveat({
 export const metadata: Metadata = {
   title: "Namma Brew | ನಮ್ಮ ಕಾಫಿ. ನಮ್ಮ ವೈಬ್.",
   description:
-    "Bengaluru's favourite coffee shop in Koramangala. Fresh filter coffee, South Indian breakfast, free Wi-Fi — ಆರಾಮದ ವಾತಾವರಣದಲ್ಲಿ ಕಾಫಿ ಸವಿಯಿರಿ.",
+    "Bengaluru's favourite coffee shop. Fresh filter coffee, South Indian breakfast, free Wi-Fi — ಆರಾಮದ ವಾತಾವರಣದಲ್ಲಿ ಕಾಫಿ ಸವಿಯಿರಿ.",
   keywords: [
     "coffee shop Bengaluru",
-    "filter coffee Koramangala",
+    "filter coffee Bengaluru",
     "cafe Bengaluru",
     "ಕಾಫಿ ಬೆಂಗಳೂರು",
     "namma brew",

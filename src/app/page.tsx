@@ -4,7 +4,8 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import dynamic from "next/dynamic";
 import { 
-  Coffee, Menu as MenuIcon, X, MapPin, Star, Wifi, Clock, ArrowRight, ArrowUpRight, GraduationCap
+  Coffee, Menu as MenuIcon, X, MapPin, Star, Wifi, Clock, ArrowRight, ArrowUpRight, GraduationCap,
+  Sparkles, CheckCircle2, MessageSquare, Send, Smartphone, Layers
 } from "lucide-react";
 
 // Lazy-load the heavy canvas animation
@@ -33,9 +34,11 @@ export default function NammaBrew() {
         <Gallery />
         <OurStory />
         <CustomerLove />
+        <CustomWebsiteStudio />
         <Location />
         <FinalCTA />
         <Footer />
+        <FloatingWebsiteCTA />
       </div>
     </>
   );
@@ -61,19 +64,22 @@ function Navbar() {
         </div>
 
         {/* Desktop Nav */}
-        <div className="hidden md:flex items-center gap-8">
-          {['Home', 'Menu', 'Our Story', 'Offers', 'Visit Us'].map(item => (
+        <div className="hidden lg:flex items-center gap-6">
+          {['Home', 'Menu', 'Our Story', 'Offers', 'Order Website', 'Visit Us'].map(item => (
             <a key={item} href={`#${item.toLowerCase().replace(' ', '-')}`} className="text-sm font-medium text-[#3E2723]/70 hover:text-[#2E4F4F] transition-colors">
               {item}
             </a>
           ))}
         </div>
 
-        <div className="hidden md:flex items-center gap-4">
-          <Link href="/campaign" className="px-5 py-2.5 bg-white border border-[#3E2723]/20 text-[#3E2723] rounded-full text-sm font-semibold hover:border-[#2E4F4F] hover:text-[#2E4F4F] transition-colors shadow-sm">
-            Create Campaign
+        <div className="hidden md:flex items-center gap-3">
+          <a href="#order-website" className="px-4 py-2 bg-[#D4AF37] hover:bg-[#c49f2e] text-[#3E2723] rounded-full text-xs font-bold transition-all shadow-sm flex items-center gap-1.5">
+            <Sparkles className="w-3.5 h-3.5" /> Get Café Website
+          </a>
+          <Link href="/campaign" className="px-4 py-2 bg-white border border-[#3E2723]/20 text-[#3E2723] rounded-full text-xs font-semibold hover:border-[#2E4F4F] hover:text-[#2E4F4F] transition-colors shadow-sm">
+            AI Campaign OS
           </Link>
-          <a href="#menu" className="px-6 py-2.5 bg-[#2E4F4F] hover:bg-[#1a2d2d] text-white rounded-full text-sm font-semibold transition-colors inline-block text-center">Order Now</a>
+          <a href="#menu" className="px-5 py-2 bg-[#2E4F4F] hover:bg-[#1a2d2d] text-white rounded-full text-xs font-semibold transition-colors inline-block text-center">Menu</a>
         </div>
 
         {/* Mobile Toggle */}
@@ -84,17 +90,20 @@ function Navbar() {
 
       {/* Mobile Nav */}
       {isOpen && (
-        <div className="md:hidden absolute top-20 left-0 w-full bg-[#FDFBF7] border-b border-[#3E2723]/10 px-6 py-6 flex flex-col gap-6 shadow-xl">
-          {['Home', 'Menu', 'Our Story', 'Offers', 'Visit Us'].map(item => (
+        <div className="md:hidden absolute top-20 left-0 w-full bg-[#FDFBF7] border-b border-[#3E2723]/10 px-6 py-6 flex flex-col gap-5 shadow-xl">
+          {['Home', 'Menu', 'Our Story', 'Offers', 'Order Website', 'Visit Us'].map(item => (
             <a key={item} href={`#${item.toLowerCase().replace(' ', '-')}`} onClick={() => setIsOpen(false)} className="text-lg font-medium text-[#3E2723]">
               {item}
             </a>
           ))}
-          <div className="flex flex-col gap-3 pt-4 border-t border-[#3E2723]/10">
-            <Link href="/campaign" className="px-6 py-3 bg-white border border-[#3E2723]/20 text-[#3E2723] rounded-full font-semibold w-full text-center">
-              Create Campaign
+          <div className="flex flex-col gap-2.5 pt-4 border-t border-[#3E2723]/10">
+            <a href="#order-website" onClick={() => setIsOpen(false)} className="px-6 py-3 bg-[#D4AF37] text-[#3E2723] rounded-full font-bold w-full text-center flex items-center justify-center gap-2">
+              <Sparkles className="w-4 h-4" /> Get Your Café Website
+            </a>
+            <Link href="/campaign" className="px-6 py-2.5 bg-white border border-[#3E2723]/20 text-[#3E2723] rounded-full font-semibold w-full text-center">
+              AI Campaign OS
             </Link>
-            <a href="#menu" className="px-6 py-2.5 bg-[#2E4F4F] hover:bg-[#1a2d2d] text-white rounded-full text-sm font-semibold transition-colors inline-block text-center">Order Now</a>
+            <a href="#menu" onClick={() => setIsOpen(false)} className="px-6 py-2.5 bg-[#2E4F4F] text-white rounded-full font-semibold w-full text-center">Explore Menu</a>
           </div>
         </div>
       )}
@@ -523,6 +532,337 @@ function CustomerLove() {
   );
 }
 
+function CustomWebsiteStudio() {
+  const [selectedPlan, setSelectedPlan] = useState<"classic" | "enhanced" | "custom">("classic");
+  const [businessName, setBusinessName] = useState("");
+  const [contactInfo, setContactInfo] = useState("");
+  const [customIdea, setCustomIdea] = useState("");
+  const [timeline, setTimeline] = useState("48-72 hours");
+  const [submitted, setSubmitted] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const plans = [
+    {
+      id: "classic" as const,
+      badge: "Same Style as Namma Brew",
+      title: "The Classic Mirror",
+      tagline: "Exact same aesthetic, animations & AI marketing engine",
+      priceTag: "Fastest Turnaround (48–72h)",
+      description: "Re-skin this exact premium Namma Brew web app for your coffee shop or café brand.",
+      features: [
+        "Cinematic entrance steam & café splash animation",
+        "Interactive digital menu (hot brews, cold drinks & bites)",
+        "Bengaluru aesthetic with customer love wall",
+        "10-Step CampaignGuard AI marketing engine",
+        "Fast 48–72 hour turnkey delivery"
+      ],
+      highlight: "border-[#D4AF37] bg-white shadow-lg ring-2 ring-[#D4AF37]/30"
+    },
+    {
+      id: "enhanced" as const,
+      badge: "Supercharged Operations",
+      title: "The Enhanced Edition",
+      tagline: "Namma Brew + Advanced Ordering Superpowers",
+      priceTag: "Most Popular for High-Volume Cafés",
+      description: "Everything in the classic build, upgraded with full digital ordering and customer retention tools.",
+      features: [
+        "Everything included in the Classic Edition",
+        "QR Code Table Ordering & digital bill generation",
+        "Customer loyalty stamp cards & points rewards",
+        "Online table reservation & booking calendar",
+        "Instant automated WhatsApp alerts for orders"
+      ],
+      highlight: "border-[#2E4F4F] bg-white shadow-xl ring-2 ring-[#2E4F4F]/40"
+    },
+    {
+      id: "custom" as const,
+      badge: "100% Bespoke Concept",
+      title: "Totally Custom Concept",
+      tagline: "Built around your unique creative vision",
+      priceTag: "Any Food & Beverage Concept",
+      description: "Bakeries, cloud kitchens, roasteries, pubs, bistros, or ice cream parlours — built to your exact specifications.",
+      features: [
+        "Bespoke 3D animations, custom color schemes & themes",
+        "Unique typography, mascot styling & custom artwork",
+        "Direct POS, Swiggy/Zomato, and custom CRM integration",
+        "Multi-outlet store locator & franchise portal",
+        "Any customized features according to your creative idea"
+      ],
+      highlight: "border-[#3E2723] bg-white shadow-lg ring-2 ring-[#3E2723]/30"
+    }
+  ];
+
+  const currentPlan = plans.find(p => p.id === selectedPlan) || plans[0];
+
+  const constructMessage = () => {
+    return `☕ *Custom Café Website Inquiry*\n\n` +
+      `*Café/Business Name:* ${businessName.trim() || "Not specified"}\n` +
+      `*Contact/WhatsApp:* ${contactInfo.trim() || "Not specified"}\n` +
+      `*Chosen Style:* ${currentPlan.title} (${currentPlan.badge})\n` +
+      `*Target Timeline:* ${timeline}\n` +
+      `*Specific Ideas & Requirements:*\n${customIdea.trim() || "I want to discuss options for my café."}\n\n` +
+      `_Sent via Namma Brew Client Web Studio_`;
+  };
+
+  const handleWhatsAppSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitted(true);
+    const message = constructMessage();
+    const encoded = encodeURIComponent(message);
+    window.open(`https://wa.me/?text=${encoded}`, "_blank");
+  };
+
+  const handleInstagramCopyAndOpen = () => {
+    const message = constructMessage();
+    if (typeof navigator !== "undefined" && navigator.clipboard) {
+      navigator.clipboard.writeText(message);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 4000);
+    }
+    window.open("https://instagram.com/namma_.brew", "_blank");
+  };
+
+  return (
+    <section id="order-website" className="py-28 px-6 bg-gradient-to-b from-[#FDFBF7] via-[#F5F0E6] to-[#FDFBF7] border-y border-[#3E2723]/10 relative overflow-hidden">
+      {/* Decorative Café Ambient Elements */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-[#D4AF37]/10 rounded-full blur-3xl pointer-events-none -mr-20 -mt-20"></div>
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#2E4F4F]/10 rounded-full blur-3xl pointer-events-none -ml-20 -mb-20"></div>
+
+      <div className="max-w-7xl mx-auto relative z-10">
+        {/* Section Header */}
+        <div className="text-center max-w-3xl mx-auto mb-16">
+          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#3E2723] text-[#D4AF37] text-xs font-bold tracking-widest uppercase mb-4 shadow-sm">
+            <Sparkles className="w-3.5 h-3.5 text-[#D4AF37]" /> Client Studio & Web Development
+          </div>
+          <h2 style={playfair} className="text-4xl md:text-6xl font-bold text-[#3E2723] mb-6 leading-tight">
+            Want a Website Like This for <span className="text-[#2E4F4F]">Your Coffee Shop?</span>
+          </h2>
+          <p className="text-lg md:text-xl text-[#3E2723]/80 leading-relaxed font-medium">
+            We build and deliver high-converting digital storefronts & autonomous AI campaign engines. Choose the exact style of <strong>Namma Brew</strong>, request enhanced operational features, or bring your totally unique idea.
+          </p>
+        </div>
+
+        {/* 3 Interactive Tier Cards */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+          {plans.map((plan) => {
+            const isSelected = selectedPlan === plan.id;
+            return (
+              <div 
+                key={plan.id}
+                onClick={() => setSelectedPlan(plan.id)}
+                className={`relative rounded-3xl p-8 cursor-pointer transition-all duration-300 flex flex-col justify-between border-2 ${
+                  isSelected 
+                    ? `${plan.highlight} transform -translate-y-2` 
+                    : "bg-white/80 border-[#3E2723]/10 hover:border-[#3E2723]/30 hover:bg-white hover:-translate-y-1"
+                }`}
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-4">
+                    <span className={`px-3 py-1 rounded-full text-xs font-bold ${
+                      plan.id === 'classic' ? 'bg-[#D4AF37]/20 text-[#3E2723]' :
+                      plan.id === 'enhanced' ? 'bg-[#2E4F4F] text-white' :
+                      'bg-[#3E2723] text-white'
+                    }`}>
+                      {plan.badge}
+                    </span>
+                    {isSelected && (
+                      <span className="flex items-center gap-1 text-xs font-bold text-green-700 bg-green-100 px-2.5 py-0.5 rounded-full">
+                        <CheckCircle2 className="w-3.5 h-3.5" /> Selected
+                      </span>
+                    )}
+                  </div>
+
+                  <h3 style={playfair} className="text-2xl font-bold text-[#3E2723] mb-1">{plan.title}</h3>
+                  <p className="text-xs font-semibold text-[#2E4F4F] mb-3">{plan.tagline}</p>
+                  <p className="text-sm text-[#3E2723]/70 mb-6 leading-relaxed">{plan.description}</p>
+
+                  <div className="space-y-3 mb-6 pt-4 border-t border-[#3E2723]/10">
+                    <p className="text-xs font-bold uppercase tracking-wider text-[#3E2723]/50">Included Deliverables:</p>
+                    {plan.features.map((feat, i) => (
+                      <div key={i} className="flex items-start gap-2.5 text-sm text-[#3E2723]/90">
+                        <CheckCircle2 className="w-4 h-4 text-[#D4AF37] shrink-0 mt-0.5" />
+                        <span>{feat}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+
+                <div className="pt-4 border-t border-[#3E2723]/10">
+                  <div className="text-xs font-semibold text-[#3E2723]/60 mb-3">{plan.priceTag}</div>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      setSelectedPlan(plan.id);
+                      const el = document.getElementById('inquiry-form');
+                      if (el) el.scrollIntoView({ behavior: 'smooth' });
+                    }}
+                    className={`w-full py-3 rounded-full text-sm font-bold transition-colors ${
+                      isSelected 
+                        ? 'bg-[#2E4F4F] text-white hover:bg-[#1f3737]' 
+                        : 'bg-[#F5F0E6] text-[#3E2723] hover:bg-[#3E2723] hover:text-white'
+                    }`}
+                  >
+                    {isSelected ? 'Customizing This Package ↓' : 'Select This Edition'}
+                  </button>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Interactive Order & Inquiry Form */}
+        <div id="inquiry-form" className="max-w-4xl mx-auto bg-white rounded-3xl p-8 md:p-12 shadow-xl border border-[#3E2723]/10">
+          <div className="text-center mb-8">
+            <span className="text-xs font-bold uppercase tracking-widest text-[#D4AF37] block mb-2">Instant Project Booking</span>
+            <h3 style={playfair} className="text-3xl md:text-4xl font-bold text-[#3E2723]">
+              Submit Your Café Website Order
+            </h3>
+            <p className="text-[#3E2723]/70 text-sm mt-2">
+              Ready for <strong>{currentPlan.title}</strong>? Fill in your details below to directly dispatch your order.
+            </p>
+          </div>
+
+          <form onSubmit={handleWhatsAppSubmit} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-[#3E2723] mb-2">
+                  Café / Brand Name *
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. Third Wave Roastery, Brew & Bites, etc."
+                  value={businessName}
+                  onChange={(e) => setBusinessName(e.target.value)}
+                  className="w-full px-4 py-3 rounded-xl border border-[#3E2723]/20 bg-[#FDFBF7] text-[#3E2723] placeholder-[#3E2723]/40 focus:outline-none focus:border-[#2E4F4F] text-sm"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-[#3E2723] mb-2">
+                  Your WhatsApp / Phone Number *
+                </label>
+                <input
+                  type="text"
+                  required
+                  placeholder="e.g. +91 98765 43210"
+                  value={contactInfo}
+                  onChange={(e) => setContactInfo(e.target.value)}
+                  className="w-full px-4 py-3 rounded-xl border border-[#3E2723]/20 bg-[#FDFBF7] text-[#3E2723] placeholder-[#3E2723]/40 focus:outline-none focus:border-[#2E4F4F] text-sm"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-[#3E2723] mb-2">
+                  Website Package Selected
+                </label>
+                <select
+                  value={selectedPlan}
+                  onChange={(e) => setSelectedPlan(e.target.value as any)}
+                  className="w-full px-4 py-3 rounded-xl border border-[#3E2723]/20 bg-[#FDFBF7] text-[#3E2723] focus:outline-none focus:border-[#2E4F4F] text-sm font-medium"
+                >
+                  <option value="classic">The Classic Mirror (Same as Namma Brew)</option>
+                  <option value="enhanced">The Enhanced Edition (Namma Brew + QR Ordering & Loyalty)</option>
+                  <option value="custom">Totally Custom Concept (Bespoke to your idea)</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold uppercase tracking-wider text-[#3E2723] mb-2">
+                  Preferred Turnaround Time
+                </label>
+                <select
+                  value={timeline}
+                  onChange={(e) => setTimeline(e.target.value)}
+                  className="w-full px-4 py-3 rounded-xl border border-[#3E2723]/20 bg-[#FDFBF7] text-[#3E2723] focus:outline-none focus:border-[#2E4F4F] text-sm font-medium"
+                >
+                  <option value="48-72 hours">Express Delivery (Within 48–72 Hours)</option>
+                  <option value="1 week">Standard (1 Week)</option>
+                  <option value="Flexible">Flexible / Ongoing Discussion</option>
+                </select>
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-xs font-bold uppercase tracking-wider text-[#3E2723] mb-2">
+                Your Creative Vision & Custom Feature Requests
+              </label>
+              <textarea
+                rows={3}
+                placeholder="Describe your café's vibe, signature dishes, color preferences, or any specific enhancements (e.g. online booking, cold brew subscription, dark theme)..."
+                value={customIdea}
+                onChange={(e) => setCustomIdea(e.target.value)}
+                className="w-full px-4 py-3 rounded-xl border border-[#3E2723]/20 bg-[#FDFBF7] text-[#3E2723] placeholder-[#3E2723]/40 focus:outline-none focus:border-[#2E4F4F] text-sm resize-none"
+              ></textarea>
+            </div>
+
+            {/* Notification alert after submission */}
+            {submitted && (
+              <div className="p-4 bg-green-50 border border-green-200 rounded-xl text-green-800 text-sm flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-green-600 shrink-0" />
+                <span>Inquiry formatted! Opening WhatsApp to connect with our development team.</span>
+              </div>
+            )}
+
+            {copied && (
+              <div className="p-4 bg-purple-50 border border-purple-200 rounded-xl text-purple-800 text-sm flex items-center gap-2">
+                <CheckCircle2 className="w-5 h-5 text-purple-600 shrink-0" />
+                <span>Inquiry details copied to clipboard! Paste directly into your Instagram DM to @namma_.brew.</span>
+              </div>
+            )}
+
+            {/* Action Buttons */}
+            <div className="pt-4 flex flex-col sm:flex-row gap-4 items-center justify-between">
+              <button
+                type="submit"
+                className="w-full sm:w-auto px-8 py-4 bg-[#2E4F4F] hover:bg-[#1a2d2d] text-white rounded-full font-bold text-sm transition-all shadow-md flex items-center justify-center gap-2"
+              >
+                <Send className="w-4 h-4" /> Send Order via WhatsApp
+              </button>
+
+              <button
+                type="button"
+                onClick={handleInstagramCopyAndOpen}
+                className="w-full sm:w-auto px-6 py-4 bg-[#F5F0E6] hover:bg-[#ebdcc7] text-[#3E2723] rounded-full font-bold text-sm transition-colors flex items-center justify-center gap-2 border border-[#3E2723]/10"
+              >
+                <Smartphone className="w-4 h-4 text-[#D4AF37]" /> DM on Instagram (@namma_.brew)
+              </button>
+            </div>
+
+            <div className="mt-8 pt-6 border-t border-[#3E2723]/10 text-center text-xs text-[#3E2723]/70 flex flex-wrap justify-center items-center gap-6">
+              <span>📩 Queries: <a href="mailto:namma-brew@rootnode-rebels.cc.cd" className="font-bold text-[#2E4F4F] hover:underline">namma-brew@rootnode-rebels.cc.cd</a></span>
+              <span>💻 Dev Contact: <a href="mailto:contact@rootnode-rebels.cc.cd" className="font-bold text-[#2E4F4F] hover:underline">contact@rootnode-rebels.cc.cd</a></span>
+              <span>🏢 GitHub Org: <a href="https://github.com/RootNode-Rebels" target="_blank" rel="noreferrer" className="font-bold text-[#D4AF37] hover:underline">RootNode-Rebels</a></span>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function FloatingWebsiteCTA() {
+  return (
+    <aside aria-label="Order custom website" className="fixed bottom-6 right-6 z-40 hidden sm:block">
+      <a 
+        href="#order-website"
+        className="group flex items-center gap-3 bg-[#3E2723] hover:bg-[#2E4F4F] text-white px-5 py-3 rounded-full shadow-2xl border-2 border-[#D4AF37]/60 hover:border-[#D4AF37] transition-all transform hover:scale-105"
+      >
+        <span className="w-8 h-8 rounded-full bg-[#D4AF37] text-[#3E2723] flex items-center justify-center font-bold text-sm shrink-0 shadow-sm animate-bounce">
+          ☕
+        </span>
+        <div className="text-left pr-1">
+          <p className="text-[10px] uppercase tracking-wider text-[#D4AF37] font-bold">Client Studio</p>
+          <p className="text-xs font-bold leading-tight">Get Your Café Website <span className="text-[#D4AF37] group-hover:translate-x-1 inline-block transition-transform">→</span></p>
+        </div>
+      </a>
+    </aside>
+  );
+}
+
 function Location() {
   return (
     <section id="visit-us" className="py-24 px-6 bg-[#F5F0E6]">
@@ -536,16 +876,6 @@ function Location() {
           <div className="space-y-6">
             <div className="flex items-start gap-4">
               <div className="w-10 h-10 bg-[#F5F0E6] rounded-full flex items-center justify-center text-[#2E4F4F] shrink-0">
-                <MapPin className="w-5 h-5" />
-              </div>
-              <div>
-                <h4 className="font-bold text-[#3E2723]">Location</h4>
-                <p className="text-[#3E2723]/70">Koramangala, Bengaluru, Karnataka, India</p>
-              </div>
-            </div>
-            
-            <div className="flex items-start gap-4">
-              <div className="w-10 h-10 bg-[#F5F0E6] rounded-full flex items-center justify-center text-[#2E4F4F] shrink-0">
                 <Clock className="w-5 h-5" />
               </div>
               <div>
@@ -555,7 +885,7 @@ function Location() {
             </div>
           </div>
           
-          <a href="#visit-us" className="inline-flex px-8 py-4 bg-[#3E2723] text-white rounded-full font-medium hover:bg-[#2a1a17] transition-colors items-center gap-2">Get Directions <ArrowUpRight className="w-4 h-4" /></a>
+          <a href="#visit-us" className="inline-flex px-8 py-4 bg-[#3E2723] text-white rounded-full font-medium hover:bg-[#2a1a17] transition-colors items-center gap-2">Experience Namma Brew <ArrowUpRight className="w-4 h-4" /></a>
         </div>
         
         <div className="flex-1 w-full h-[400px] bg-[#F5F0E6] rounded-2xl overflow-hidden relative border border-[#3E2723]/10">
@@ -604,15 +934,20 @@ function Footer() {
           <span>Good Vibes</span>
         </div>
 
-        <div className="flex items-center gap-6">
+        <div className="flex items-center gap-6 text-sm">
+          <a href="https://github.com/RootNode-Rebels" target="_blank" rel="noreferrer" className="hover:text-white transition-colors flex items-center gap-1.5 font-medium text-[#D4AF37]">
+            RootNode-Rebels
+          </a>
           <a href="https://instagram.com/namma_.brew" target="_blank" rel="noreferrer" className="hover:text-white transition-colors">Instagram</a>
-          <a href="#" className="hover:text-white transition-colors">Facebook</a>
-          <a href="#" className="hover:text-white transition-colors">WhatsApp</a>
+          <a href="mailto:namma-brew@rootnode-rebels.cc.cd" className="hover:text-white transition-colors">Queries</a>
+          <a href="mailto:contact@rootnode-rebels.cc.cd" className="hover:text-white transition-colors">Developer</a>
         </div>
       </div>
-      <div className="max-w-7xl mx-auto mt-12 text-center md:text-left text-sm flex flex-col md:flex-row justify-between">
-        <p>&copy; 2026 Namma Brew. All rights reserved.</p>
-        <p className="mt-2 md:mt-0">Koramangala, Bengaluru, Karnataka, India</p>
+      <div className="max-w-7xl mx-auto mt-12 text-center md:text-left text-sm flex flex-col md:flex-row justify-between items-center gap-4">
+        <div>
+          <p>&copy; 2026 Namma Brew. An open-source project by <a href="https://github.com/RootNode-Rebels" target="_blank" rel="noreferrer" className="font-bold text-[#D4AF37] hover:underline">RootNode Rebels Team</a>.</p>
+          <p className="text-xs text-[#FDFBF7]/50 mt-1">Queries: <a href="mailto:namma-brew@rootnode-rebels.cc.cd" className="text-[#D4AF37]/80 hover:underline">namma-brew@rootnode-rebels.cc.cd</a> • Dev: <a href="mailto:contact@rootnode-rebels.cc.cd" className="text-[#D4AF37]/80 hover:underline">contact@rootnode-rebels.cc.cd</a></p>
+        </div>
       </div>
     </footer>
   );

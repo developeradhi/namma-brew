@@ -3,8 +3,8 @@ import type { NextConfig } from "next";
 const isProd = process.env.NODE_ENV === "production";
 
 const nextConfig: NextConfig = {
-  // Static HTML export for GitHub Pages
-  output: "export",
+  // Static HTML export for GitHub Pages in production
+  ...(isProd ? { output: "export" as const } : {}),
   basePath: isProd ? "/namma-brew" : "",
   assetPrefix: isProd ? "/namma-brew/" : "",
   images: {

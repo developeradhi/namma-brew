@@ -97,7 +97,7 @@ export default function CampaignWorkspace() {
   const [isDeploying, setIsDeploying] = useState(false);
   const [deploymentComplete, setDeploymentComplete] = useState(false);
 
-  const simulateProcess = (setLoading, setComplete) => {
+  const simulateProcess = (setLoading: (val: boolean) => void, setComplete: (val: boolean) => void) => {
     setLoading(true);
     setComplete(false);
     setTimeout(() => {
@@ -802,7 +802,7 @@ export default function CampaignWorkspace() {
                   <div className="flex flex-wrap gap-x-8 gap-y-3">
                     <div className="flex flex-col"><span className="text-[10px] uppercase text-[#3E2723]/50 font-bold">Business</span><span className="text-sm font-medium">{lockedFacts.facts.businessName}</span></div>
                     <div className="flex flex-col"><span className="text-[10px] uppercase text-[#3E2723]/50 font-bold">Offer</span><span className="text-sm font-medium">{lockedFacts.facts.offer}</span></div>
-                    <div className="flex flex-col"><span className="text-[10px] uppercase text-[#3E2723]/50 font-bold">Product</span><span className="text-sm font-medium">{lockedFacts.facts.productOrService}</span></div>
+                    <div className="flex flex-col"><span className="text-[10px] uppercase text-[#3E2723]/50 font-bold">Product</span><span className="text-sm font-medium">{lockedFacts.facts.offerAppliesTo}</span></div>
                     <div className="flex flex-col"><span className="text-[10px] uppercase text-[#3E2723]/50 font-bold">Validity</span><span className="text-sm font-medium">{lockedFacts.facts.validity}</span></div>
                     <div className="flex flex-col"><span className="text-[10px] uppercase text-[#3E2723]/50 font-bold">Location</span><span className="text-sm font-medium">{lockedFacts.facts.location}</span></div>
                   </div>
@@ -1440,7 +1440,7 @@ export default function CampaignWorkspace() {
             <button type="button" className="text-sm font-bold text-[#3E2723]/60 hover:text-[#3E2723] px-4 py-2 transition-colors">
               Save Draft
             </button>
-            <button type="button" onClick={(e) => { e.preventDefault(); handleContinue(e); }} className="px-8 py-3 bg-[#2E4F4F] text-white rounded-full text-sm font-bold hover:bg-[#1f3636] transition-all flex items-center gap-2 shadow-lg hover:shadow-xl hover:-translate-y-0.5">
+            <button type="button" onClick={(e) => { e.preventDefault(); handleContinue(); }} className="px-8 py-3 bg-[#2E4F4F] text-white rounded-full text-sm font-bold hover:bg-[#1f3636] transition-all flex items-center gap-2 shadow-lg hover:shadow-xl hover:-translate-y-0.5">
               Continue to Clarifications <ArrowRight className="w-4 h-4" />
             </button>
           </>

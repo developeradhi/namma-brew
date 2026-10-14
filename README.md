@@ -34,6 +34,15 @@ Built specifically for Bengaluru's vibrant café culture, the platform solves th
 
 ---
 
+## 🎥 Live Video Walkthrough
+
+<div align="center">
+  <img src="./public/demo-walkthrough.webp" alt="Namma Brew Complete Walkthrough" width="100%" style="border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.15);" />
+  <p><sub>Interactive demo of the Coffee Shop Entrance animation, dynamic menu, client studio, and CampaignGuard AI engine.</sub></p>
+</div>
+
+---
+
 ## ✨ Key Features
 
 ### ☕ Digital Café Experience

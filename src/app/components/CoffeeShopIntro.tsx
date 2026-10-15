@@ -7,16 +7,25 @@ export default function CoffeeShopIntro({ onComplete }: { onComplete: () => void
   const [textStep, setTextStep] = useState(0);
 
   useEffect(() => {
-    // Sequence the text animations
-    const t1 = setTimeout(() => setTextStep(1), 500);
-    const t2 = setTimeout(() => setTextStep(2), 2000);
-    const t3 = setTimeout(() => setTextStep(3), 3500);
+    // Check if user already saw the intro in this session to make repeat visits instantaneous
+    if (typeof window !== "undefined" && sessionStorage.getItem("namma_intro_seen")) {
+      onComplete();
+      return;
+    }
+
+    // Fast, cinematic text sequencing
+    const t1 = setTimeout(() => setTextStep(1), 150);
+    const t2 = setTimeout(() => setTextStep(2), 700);
+    const t3 = setTimeout(() => setTextStep(3), 1300);
     
-    // Complete the intro after 7 seconds
+    // Smooth fadeout at 2.2 seconds (instead of 7+ seconds)
     const t4 = setTimeout(() => {
       setFadeOut(true);
-      setTimeout(onComplete, 1000);
-    }, 7000);
+      if (typeof window !== "undefined") {
+        sessionStorage.setItem("namma_intro_seen", "true");
+      }
+      setTimeout(onComplete, 400);
+    }, 2200);
 
     return () => {
       clearTimeout(t1);
@@ -28,20 +37,23 @@ export default function CoffeeShopIntro({ onComplete }: { onComplete: () => void
 
   const skipIntro = () => {
     setFadeOut(true);
-    setTimeout(onComplete, 800);
+    if (typeof window !== "undefined") {
+      sessionStorage.setItem("namma_intro_seen", "true");
+    }
+    setTimeout(onComplete, 300);
   };
 
   return (
     <div
-      className={`fixed inset-0 z-[9999] bg-[#0d0602] transition-opacity duration-1000 overflow-hidden ${
+      className={`fixed inset-0 z-[9999] bg-[#0d0602] transition-opacity duration-500 overflow-hidden ${
         fadeOut ? "opacity-0 pointer-events-none" : "opacity-100"
       }`}
     >
-      {/* Cinematic slowly zooming background image of a barista */}
+      {/* Cinematic lightweight background image of a barista */}
       <div 
-        className="absolute inset-0 bg-cover bg-center opacity-40 animate-[zoomPan_10s_ease-in-out_forwards]"
+        className="absolute inset-0 bg-cover bg-center opacity-40 animate-[zoomPan_4s_ease-in-out_forwards]"
         style={{
-          backgroundImage: "url('https://images.unsplash.com/photo-1600093463592-8e36ae95ef56?auto=format&fit=crop&w=2000&q=80')",
+          backgroundImage: "url('https://images.unsplash.com/photo-1600093463592-8e36ae95ef56?auto=format&fit=crop&w=800&q=70')",
           transformOrigin: "center center"
         }}
       />

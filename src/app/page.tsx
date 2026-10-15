@@ -158,8 +158,9 @@ function Hero() {
           <div className="absolute -inset-4 bg-[#F5F0E6] rounded-[2rem] rotate-3 -z-10"></div>
           <div className="relative h-[500px] md:h-[650px] w-full rounded-[2rem] overflow-hidden shadow-2xl">
             <img 
-              src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?auto=format&fit=crop&w=1200&q=80" 
+              src="https://images.unsplash.com/photo-1497935586351-b67a49e012bf?auto=format&fit=crop&w=800&q=75" 
               alt="Pouring hot coffee in a cozy cafe" 
+              decoding="async"
               className="w-full h-full object-cover"
             />
             {/* Offer Badge Overlay */}
@@ -234,7 +235,7 @@ function SignatureMenu() {
           {menu.map((item, i) => (
             <div key={i} className="min-w-[280px] md:min-w-[320px] bg-white rounded-2xl p-4 shadow-sm border border-[#3E2723]/5 hover:-translate-y-2 transition-transform duration-300 snap-start">
               <div className="h-48 rounded-xl overflow-hidden mb-4 bg-[#F5F0E6]">
-                <img src={item.img} alt={item.name} className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
+                <img src={item.img} alt={item.name} loading="lazy" decoding="async" className="w-full h-full object-cover hover:scale-105 transition-transform duration-700" />
               </div>
               <div className="flex justify-between items-start mb-2">
                 <h3 className="font-bold text-lg text-[#3E2723]">{item.name}</h3>
@@ -310,7 +311,7 @@ function FullMenu() {
             <a href="#menu" className="inline-block px-8 py-4 bg-[#3E2723] text-white rounded-full font-medium hover:bg-[#2a1a17] transition-colors mt-2 shadow-lg shadow-[#3E2723]/20">Order This</a>
           </div>
           <div className="md:w-1/2 h-[300px] md:h-[450px] w-full relative z-10 rounded-2xl overflow-hidden shadow-xl">
-             <img src="https://images.unsplash.com/photo-1559525839-b184a4d698c7?auto=format&fit=crop&w=800&q=80" alt="Filter Coffee" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+             <img src="https://images.unsplash.com/photo-1559525839-b184a4d698c7?auto=format&fit=crop&w=700&q=75" loading="lazy" decoding="async" alt="Filter Coffee" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
           </div>
           <div className="absolute top-0 right-0 w-96 h-96 bg-[#F5F0E6] rounded-full blur-3xl -z-0 opacity-50 translate-x-1/2 -translate-y-1/4"></div>
         </div>
@@ -337,7 +338,7 @@ function FullMenu() {
           {menuData[activeCategory].map((item, i) => (
             <div key={i} className="bg-white rounded-2xl overflow-hidden border border-[#3E2723]/10 hover:border-[#3E2723]/30 hover:-translate-y-1 transition-all duration-300 shadow-sm hover:shadow-xl group flex flex-col">
               <div className="h-56 overflow-hidden relative bg-[#F5F0E6]">
-                <img src={item.img} alt={item.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <img src={item.img} alt={item.name} loading="lazy" decoding="async" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
                 {item.popular && (
                   <div className="absolute top-4 left-4 bg-[#D4AF37] text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow-md">
                     Popular
@@ -396,7 +397,7 @@ function SpecialOffer() {
           <a href="#offers" className="inline-block px-6 py-3 bg-[#D4AF37] text-[#3E2723] rounded-full font-bold shadow-md hover:bg-[#b5952f] transition-colors">Grab The Offer</a>
         </div>
         <div className="md:w-2/5 h-[300px] md:h-auto">
-          <img src="https://images.unsplash.com/photo-1559496417-e7f25cb247f3?auto=format&fit=crop&w=800&q=80" alt="Two coffees" className="w-full h-full object-cover" />
+          <img src="https://images.unsplash.com/photo-1559496417-e7f25cb247f3?auto=format&fit=crop&w=700&q=75" loading="lazy" decoding="async" alt="Two coffees" className="w-full h-full object-cover" />
         </div>
       </div>
     </section>
@@ -430,6 +431,8 @@ function StudentOffer() {
             <img 
               src="/images/student_offer.jpg" 
               alt="Students hanging out at a premium cafe" 
+              loading="lazy"
+              decoding="async"
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-[1.5s]" 
             />
             {/* Gradient Overlay for seamless blend */}
@@ -460,7 +463,7 @@ function Gallery() {
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
           {images.map((img, i) => (
             <div key={i} className={`rounded-2xl overflow-hidden shadow-sm aspect-square relative group`}>
-              <img src={img} alt="Cafe Vibe" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+              <img src={img} alt="Cafe Vibe" loading="lazy" decoding="async" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
                 <p className="text-white font-medium flex items-center gap-2">@nammabrew</p>
               </div>
@@ -490,7 +493,7 @@ function OurStory() {
         </div>
         <div className="flex-1 relative">
           <div className="absolute inset-0 bg-[#D4AF37] rounded-3xl translate-x-4 translate-y-4 -z-10"></div>
-          <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=800&q=80" alt="Cafe Interior" className="rounded-3xl w-full h-[500px] object-cover shadow-lg" />
+          <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=700&q=75" loading="lazy" decoding="async" alt="Cafe Interior" className="rounded-3xl w-full h-[500px] object-cover shadow-lg" />
         </div>
       </div>
     </section>
@@ -620,6 +623,13 @@ function CustomWebsiteStudio() {
       setTimeout(() => setCopied(false), 4000);
     }
     window.open("https://instagram.com/namma_.brew", "_blank");
+  };
+
+  const handleEmailSubmit = () => {
+    const message = constructMessage();
+    const subject = encodeURIComponent(`Website Order: ${businessName || "New Café Project"}`);
+    const body = encodeURIComponent(message);
+    window.location.href = `mailto:namma-brew@rootnode-rebels.cc.cd?subject=${subject}&body=${body}`;
   };
 
   return (
@@ -820,7 +830,15 @@ function CustomWebsiteStudio() {
                 type="submit"
                 className="w-full sm:w-auto px-8 py-4 bg-[#2E4F4F] hover:bg-[#1a2d2d] text-white rounded-full font-bold text-sm transition-all shadow-md flex items-center justify-center gap-2"
               >
-                <Send className="w-4 h-4" /> Send Order via WhatsApp
+                <Send className="w-4 h-4" /> Send via WhatsApp
+              </button>
+
+              <button
+                type="button"
+                onClick={handleEmailSubmit}
+                className="w-full sm:w-auto px-6 py-4 bg-[#3E2723] hover:bg-[#251715] text-white rounded-full font-bold text-sm transition-colors flex items-center justify-center gap-2 shadow-sm"
+              >
+                <MessageSquare className="w-4 h-4 text-[#D4AF37]" /> Send via Email
               </button>
 
               <button
@@ -828,7 +846,7 @@ function CustomWebsiteStudio() {
                 onClick={handleInstagramCopyAndOpen}
                 className="w-full sm:w-auto px-6 py-4 bg-[#F5F0E6] hover:bg-[#ebdcc7] text-[#3E2723] rounded-full font-bold text-sm transition-colors flex items-center justify-center gap-2 border border-[#3E2723]/10"
               >
-                <Smartphone className="w-4 h-4 text-[#D4AF37]" /> DM on Instagram (@namma_.brew)
+                <Smartphone className="w-4 h-4 text-[#D4AF37]" /> DM on Instagram
               </button>
             </div>
 

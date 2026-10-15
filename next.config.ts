@@ -12,14 +12,7 @@ const nextConfig: NextConfig = {
   },
   // This is critical to allow ngrok to route without Next.js blocking client actions
   allowedDevOrigins: ['griminess-curable-sizable.ngrok-free.dev', 'localhost:3000'],
-  turbopack: {
-    rules: {
-      "*.css": {
-        loaders: ["@tailwindcss/turbopack"],
-        as: "*.css",
-      },
-    },
-  },
+
 };
 
 export default nextConfig;

@@ -140,14 +140,14 @@ export default function CampaignWorkspace() {
       throw new Error("Triggering deterministic fallback");
     } catch {
       // Deterministic Local Fallback (ensures 100% resilience offline and in static export)
-      const factsObj = lockedFacts?.facts || brief;
+      const factsObj: any = lockedFacts?.facts || brief;
       const bName = factsObj.businessName || brief.businessName || "Namma Brew";
       const off = factsObj.offer || brief.offer || "20% OFF";
-      const prod = (factsObj as any).offerAppliesTo || brief.exactOfferDetails || "Cappuccino & Filter Coffee";
+      const prod = factsObj.offerAppliesTo || brief.exactOfferDetails || "Cappuccino & Filter Coffee";
       const val = factsObj.validity || brief.offerValidity || "Saturday & Sunday";
       const cond = factsObj.conditions || brief.conditions || "Valid ID required";
       const loc = factsObj.location || brief.location || "Koramangala, Bengaluru";
-      const aud = (factsObj as any).eligibleCustomers || brief.targetAudience || "Coffee Lovers";
+      const aud = factsObj.eligibleCustomers || brief.targetAudience || "Coffee Lovers";
       const tag = bName.replace(/[^a-zA-Z0-9]/g, "");
 
       setGeneratedCampaign({

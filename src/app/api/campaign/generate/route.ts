@@ -66,24 +66,48 @@ export async function POST(req: Request) {
     // MOCK AGNES AI RESPONSE (Bypassing API key requirement for demo)
     
     // Simulate processing delay
-    await new Promise(resolve => setTimeout(resolve, 2500));
+    await new Promise(resolve => setTimeout(resolve, 1500));
     
-    let currentCampaign = {
-      "strategy": "Drive weekend traffic by offering a flat 20% discount on select items.",
-      "coreMessage": "20% OFF your favorite coffee this weekend!",
-      "content": {
-        "English": {
-          "Instagram": "Weekend vibes just got better! ☕ Catch up with friends and enjoy 20% OFF your favorite coffee this weekend (Oct 10-12). Tag your coffee buddy below! 👇 #NammaBrew",
-          "WhatsApp": "☕ Weekend Coffee Blast!\nGet 20% OFF on your favourite coffee from 10–12 October. Bring your friends and enjoy your weekend!"
+    const factsObj = ((lockedFacts as any)?.facts || lockedFacts || {}) as Record<string, any>;
+    const businessName = (factsObj.businessName || campaignInput.businessName || "Namma Brew").toString();
+    const offer = (factsObj.offer || campaignInput.offer || "20% OFF").toString();
+    const product = (factsObj.offerAppliesTo || campaignInput.exactOfferDetails || "Cappuccino & Filter Coffee").toString();
+    const validity = (factsObj.validity || campaignInput.offerValidity || "Saturday & Sunday").toString();
+    const conditions = (factsObj.conditions || campaignInput.conditions || "Valid ID required").toString();
+    const location = (factsObj.location || campaignInput.location || "Koramangala, Bengaluru").toString();
+    const audience = (factsObj.eligibleCustomers || campaignInput.targetAudience || "Coffee Lovers").toString();
+    const tag = businessName.replace(/[^a-zA-Z0-9]/g, "");
+
+    const currentCampaign = {
+      strategy: `Drive footfall for ${audience} at ${businessName} (${location}) by featuring ${offer} on ${product} (${validity}).`,
+      coreMessage: `${offer} on ${product} at ${businessName} — ${validity}!`,
+      content: {
+        English: {
+          Instagram: `Weekend vibes just got better at ${businessName}! ☕\n\nCatch up with friends and enjoy ${offer} on your favorite ${product} this weekend (${validity}) in ${location}. Tag your coffee buddy below! 👇\n\n📋 Note: ${conditions}\n#${tag} #FilterCoffee #BengaluruCafes #SpecialOffer #WeekendVibes`,
+          WhatsApp: `☕ *${businessName} Exclusive Alert!*\n\nHey ${audience}! Enjoy *${offer}* on *${product}*.\n\n🗓️ *Validity:* ${validity}\n📍 *Location:* ${location}\n📋 *Terms:* ${conditions}\n\nFlash this message at our counter to claim your discount! 🚀`,
+          Email: `Subject: Need a coffee break? ${offer} on ${product} at ${businessName}!\n\nHi there,\n\nTreat yourself! Enjoy ${offer} on ${product} from ${validity} at our ${location} branch.\n\nWhether you're catching up on work or relaxing with friends, ${businessName} is the perfect spot.\n\nConditions: ${conditions}\n\nWarm regards,\nTeam ${businessName}`,
+          Facebook: `Wrap up your week with a premium brew at ${businessName}! ☕ Join us this weekend (${validity}) for ${offer} on ${product}. The perfect environment in ${location} to relax or connect with friends. Valid for ${audience} (${conditions}).`
+        },
+        Kannada: {
+          Instagram: `☕ ${businessName} ನಲ್ಲಿ ವೀಕೆಂಡ್ ವೈಬ್ಸ್ ಮತ್ತಷ್ಟು ಸೂಪರ್! 🌟\n\nನಮ್ಮ ಜನಪ್ರಿಯ ${product} ಮೇಲೆ ಪಡೆಯಿರಿ ${offer} (${validity})! ${location} ನ ನಮ್ಮ ಕೆಫೆಗೆ ನಿಮ್ಮ ಸ್ನೇಹಿತರೊಂದಿಗೆ ಬನ್ನಿ ಮತ್ತು ಆನಂದಿಸಿ! 👇\n\n📋 ನಿಯಮಗಳು: ${conditions}\n#ನಮ್ಮಬ್ರೂ #ಬೆಂಗಳೂರುಕೆಫೆ #ಫಿಲ್ಟರ್‌ಕಾಫಿ #ವಿಶೇಷಆಫರ್`,
+          WhatsApp: `☕ *${businessName} ವತಿಯಿಂದ ವಿಶೇಷ ಕೊಡುಗೆ!*\n\nನಮ್ಮ ಪ್ರೀತಿಯ ಗ್ರಾಹಕರೇ, ನಿಮ್ಮ ಮೆಚ್ಚಿನ *${product}* ಮೇಲೆ ಪಡೆಯಿರಿ *${offer}*!\n\n🗓️ *ಅವಧಿ:* ${validity}\n📍 *ಸ್ಥಳ:* ${location}\n📋 *ನಿಯಮಗಳು:* ${conditions}\n\nಇಂದೇ ನಮ್ಮ ${location} ಕೆಫೆಗೆ ಭೇಟಿ ನೀಡಿ ಈ ಭರ್ಜರಿ ಕೊಡುಗೆಯನ್ನು ಪಡೆದುಕೊಳ್ಳಿ! ✨`,
+          Email: `ವಿಷಯ: ${businessName} ನಲ್ಲಿ ನಿಮಗಾಗಿ ವಿಶೇಷ ಆಫರ್: ${product} ಮೇಲೆ ${offer}!\n\nನಮಸ್ಕಾರ,\n\n${validity} ಅವಧಿಯಲ್ಲಿ ನಮ್ಮ ${businessName} ಕೆಫೆಯಲ್ಲಿ (${location}) ${product} ಮೇಲೆ ${offer} ವಿಶೇಷ ರಿಯಾಯಿತಿ ಪಡೆಯಿರಿ.\n\nನಿಯಮಗಳು: ${conditions}\n\nಬನ್ನಿ, ಶುದ್ಧ ಫಿಲ್ಟರ್ ಕಾಫಿಯೊಂದಿಗೆ ಆರಾಮಾಗಿ ಸಮಯ ಕಳೆಯಿರಿ!\n\nಧನ್ಯವಾದಗಳೊಂದಿಗೆ,\n${businessName} ತಂಡ`,
+          Facebook: `${businessName} ನಲ್ಲಿ ಈ ವಾರಾಂತ್ಯಕ್ಕೆ ಒಂದು ಬಿಸಿ ಬಿಸಿ ${product} ಸವಿಯಿರಿ! ☕ ಪಡೆಯಿರಿ ${offer} (${validity}). ಸ್ನೇಹಿತರು ಮತ್ತು ಕುಟುಂಬದೊಂದಿಗೆ ಆರಾಮವಾಗಿ ಸಮಯ ಕಳೆಯಲು ${location} ನಲ್ಲಿರುವ ನಮ್ಮ ಕೆಫೆಗೆ ಭೇಟಿ ನೀಡಿ (${conditions}).`
         }
       }
     };
     
-    let validationResult = {
-      "status": "PASS",
-      "issues": [],
-      "checkedFacts": ["20% OFF offer", "Dates: Oct 10-12", "Tone matches brand guidelines"],
-      "correctionsRequired": []
+    const validationResult = {
+      status: "PASS",
+      issues: [],
+      checkedFacts: [
+        `Offer: "${offer}" strictly preserved with zero variance`,
+        `Product: "${product}" matched without alteration`,
+        `Validity: "${validity}" correctly constrained`,
+        `Conditions: "${conditions}" verified`,
+        `Location: "${location}" confirmed accurate`
+      ],
+      correctionsRequired: []
     };
 
     return NextResponse.json({

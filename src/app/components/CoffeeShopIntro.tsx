@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useState } from "react";
 
@@ -7,25 +7,16 @@ export default function CoffeeShopIntro({ onComplete }: { onComplete: () => void
   const [textStep, setTextStep] = useState(0);
 
   useEffect(() => {
-    // Check if user already saw the intro in this session to make repeat visits instantaneous
-    if (typeof window !== "undefined" && sessionStorage.getItem("namma_intro_seen")) {
-      onComplete();
-      return;
-    }
-
-    // Fast, cinematic text sequencing
-    const t1 = setTimeout(() => setTextStep(1), 150);
-    const t2 = setTimeout(() => setTextStep(2), 700);
-    const t3 = setTimeout(() => setTextStep(3), 1300);
+    // Cinematic sequencing so the visitor can comfortably read and absorb each transition
+    const t1 = setTimeout(() => setTextStep(1), 400);   // Welcome
+    const t2 = setTimeout(() => setTextStep(2), 1600);  // Namma Brew
+    const t3 = setTimeout(() => setTextStep(3), 3000);  // Our Coffee * Our Vibe * Our Bengaluru
     
-    // Smooth fadeout at 2.2 seconds (instead of 7+ seconds)
+    // Smooth cinematic fadeout after 5.5 seconds (gives plenty of time without dragging)
     const t4 = setTimeout(() => {
       setFadeOut(true);
-      if (typeof window !== "undefined") {
-        sessionStorage.setItem("namma_intro_seen", "true");
-      }
-      setTimeout(onComplete, 400);
-    }, 2200);
+      setTimeout(onComplete, 500);
+    }, 5500);
 
     return () => {
       clearTimeout(t1);
@@ -37,21 +28,18 @@ export default function CoffeeShopIntro({ onComplete }: { onComplete: () => void
 
   const skipIntro = () => {
     setFadeOut(true);
-    if (typeof window !== "undefined") {
-      sessionStorage.setItem("namma_intro_seen", "true");
-    }
     setTimeout(onComplete, 300);
   };
 
   return (
     <div
-      className={`fixed inset-0 z-[9999] bg-[#0d0602] transition-opacity duration-500 overflow-hidden ${
+      className={`fixed inset-0 z-[9999] bg-[#0d0602] transition-opacity duration-700 overflow-hidden ${
         fadeOut ? "opacity-0 pointer-events-none" : "opacity-100"
       }`}
     >
-      {/* Cinematic lightweight background image of a barista */}
+      {/* Cinematic lightweight background image of a barista with continuous slow pan */}
       <div 
-        className="absolute inset-0 bg-cover bg-center opacity-40 animate-[zoomPan_4s_ease-in-out_forwards]"
+        className="absolute inset-0 bg-cover bg-center opacity-40 animate-[zoomPan_6s_ease-in-out_forwards]"
         style={{
           backgroundImage: "url('https://images.unsplash.com/photo-1600093463592-8e36ae95ef56?auto=format&fit=crop&w=800&q=70')",
           transformOrigin: "center center"
@@ -77,7 +65,7 @@ export default function CoffeeShopIntro({ onComplete }: { onComplete: () => void
 
         {/* Step 2: Namma Brew */}
         <h1 
-          className={`font-playfair text-6xl md:text-8xl lg:text-9xl font-black text-[#FDFBF7] leading-none mb-8 transition-all duration-1000 delay-300 ${
+          className={`font-playfair text-6xl md:text-8xl lg:text-9xl font-black text-[#FDFBF7] leading-none mb-8 transition-all duration-1000 delay-200 ${
             textStep >= 2 ? "opacity-100 scale-100" : "opacity-0 scale-90"
           }`}
           style={{ textShadow: "0 10px 40px rgba(0,0,0,0.8)" }}
@@ -86,22 +74,22 @@ export default function CoffeeShopIntro({ onComplete }: { onComplete: () => void
           <span className="text-[#D4AF37] italic">Brew</span>
         </h1>
 
-        {/* Step 3: Hygiene & Vibe (ಸ್ವಚ್ಛ · ಕ್ರಮಬದ್ಧ · ಉನ್ನತ ಗುಣಮಟ್ಟ) */}
+        {/* Step 3: Hygiene & Vibe (ಸ್ವಚ್ಛತೆ • ಶುದ್ಧತೆ • ಗುಣಮಟ್ಟ) */}
         <div 
-          className={`transition-all duration-1000 delay-500 ${
+          className={`transition-all duration-1000 delay-300 ${
             textStep >= 3 ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
           }`}
         >
           <p className="font-caveat text-2xl md:text-4xl text-[#FDFBF7]/90 mb-6 drop-shadow-lg">
-            Our Coffee — Our Vibe — Our Bengaluru
+            Our Coffee • Our Vibe • Our Bengaluru
           </p>
           
           <div className="inline-flex items-center gap-3 bg-[#2E4F4F]/40 backdrop-blur-md border border-[#D4AF37]/30 rounded-full px-6 py-2 shadow-2xl">
-            <span className="text-[#D4AF37]">✦</span>
+            <span className="text-[#D4AF37]">✨</span>
             <span className="text-[#FDFBF7] text-xs md:text-sm font-semibold tracking-[0.2em] uppercase">
-              Clean · Systematic · High Quality
+              Clean • Systematic • High Quality
             </span>
-            <span className="text-[#D4AF37]">✦</span>
+            <span className="text-[#D4AF37]">✨</span>
           </div>
         </div>
 
@@ -110,16 +98,16 @@ export default function CoffeeShopIntro({ onComplete }: { onComplete: () => void
       {/* Skip Button */}
       <button type="button"
         onClick={skipIntro}
-        className="absolute top-6 right-6 px-6 py-2 bg-white/5 hover:bg-white/10 backdrop-blur-md border border-white/10 rounded-full text-white/70 text-xs font-semibold tracking-widest uppercase transition-all duration-300 z-10"
+        className="absolute top-6 right-6 px-6 py-2.5 bg-white/10 hover:bg-white/20 backdrop-blur-md border border-white/20 rounded-full text-white/90 text-xs font-semibold tracking-widest uppercase transition-all duration-300 z-10 shadow-lg"
       >
-        Skip ›
+        Skip →
       </button>
 
       {/* Keyframes for the cinematic zoom and pan */}
       <style dangerouslySetInnerHTML={{__html: `
         @keyframes zoomPan {
           0% { transform: scale(1.05) translateY(0); }
-          100% { transform: scale(1.15) translateY(-2%); }
+          100% { transform: scale(1.2) translateY(-2%); }
         }
       `}} />
     </div>

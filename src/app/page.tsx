@@ -13,6 +13,8 @@ const CoffeeShopIntro = dynamic(() => import("./components/CoffeeShopIntro"), {
   ssr: false,
 });
 
+const BASE_PATH = process.env.NODE_ENV === "production" ? "/namma-brew" : "";
+
 export default function NammaBrew() {
   const [showIntro, setShowIntro] = useState(true);
 
@@ -274,8 +276,8 @@ function FullMenu() {
     ],
     "BREAKFAST": [
       { name: "Masala Dosa", desc: "Crispy dosa served with chutney and sambar.", price: "₹140", img: "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=600&q=80", popular: true, veg: true },
-      { name: "Idli & Vada", desc: "Soft idlis and crispy vada with fresh chutney.", price: "₹120", img: "/images/idli_vada.jpg", veg: true },
-      { name: "Ghee Podi Idli", desc: "Soft idlis tossed with ghee and spicy podi.", price: "₹130", img: "/images/ghee_podi_idli.jpg", veg: true }
+      { name: "Idli & Vada", desc: "Soft idlis and crispy vada with fresh chutney.", price: "₹120", img: `${BASE_PATH}/images/idli_vada.jpg`, veg: true },
+      { name: "Ghee Podi Idli", desc: "Soft idlis tossed with ghee and spicy podi.", price: "₹130", img: `${BASE_PATH}/images/ghee_podi_idli.jpg`, veg: true }
     ],
     "BITES": [
       { name: "Veg Grilled Sandwich", desc: "Grilled vegetables, cheese and our signature sauce.", price: "₹160", img: "https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=600&q=80", popular: true, veg: true },
@@ -338,7 +340,18 @@ function FullMenu() {
           {menuData[activeCategory].map((item, i) => (
             <div key={i} className="bg-white rounded-2xl overflow-hidden border border-[#3E2723]/10 hover:border-[#3E2723]/30 hover:-translate-y-1 transition-all duration-300 shadow-sm hover:shadow-xl group flex flex-col">
               <div className="h-56 overflow-hidden relative bg-[#F5F0E6]">
-                <img src={item.img} alt={item.name} loading="lazy" decoding="async" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
+                <img 
+                src={item.img} 
+                alt={item.name} 
+                loading="lazy" 
+                decoding="async" 
+                onError={(e) => {
+                  if (item.name.includes("Idli")) {
+                    e.currentTarget.src = "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=600&q=80";
+                  }
+                }}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" 
+              />
                 {item.popular && (
                   <div className="absolute top-4 left-4 bg-[#D4AF37] text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full shadow-md">
                     Popular
@@ -446,13 +459,23 @@ function StudentOffer() {
 
 function Gallery() {
   const images = [
-    "/images/vibe1.jpg",
-    "/images/vibe2.jpg",
-    "/images/vibe3.jpg",
-    "/images/vibe4.jpg",
-    "/images/vibe5.jpg",
-    "/images/vibe6.jpg"
+    `${BASE_PATH}/images/vibe1.jpg`,
+    `${BASE_PATH}/images/vibe2.jpg`,
+    `${BASE_PATH}/images/vibe3.jpg`,
+    `${BASE_PATH}/images/vibe4.jpg`,
+    `${BASE_PATH}/images/vibe5.jpg`,
+    `${BASE_PATH}/images/vibe6.jpg`
   ];
+
+  const vibeFallbacks = [
+    "https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1521017432531-fbd92d768814?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1442512595331-e89e73853f31?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=600&q=80",
+    "https://images.unsplash.com/photo-1498804103079-a6351b050096?auto=format&fit=crop&w=600&q=80"
+  ];
+
   return (
     <section className="py-24 px-6 bg-[#F5F0E6]">
       <div className="max-w-7xl mx-auto">
@@ -462,8 +485,17 @@ function Gallery() {
         </div>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
           {images.map((img, i) => (
-            <div key={i} className={`rounded-2xl overflow-hidden shadow-sm aspect-square relative group`}>
-              <img src={img} alt="Cafe Vibe" loading="lazy" decoding="async" className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+            <div key={i} className="rounded-2xl overflow-hidden shadow-sm aspect-square relative group bg-[#E8DFD1]/40">
+              <img 
+                src={img} 
+                alt="Cafe Vibe" 
+                loading="lazy" 
+                decoding="async" 
+                onError={(e) => {
+                  e.currentTarget.src = vibeFallbacks[i % vibeFallbacks.length];
+                }}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" 
+              />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
                 <p className="text-white font-medium flex items-center gap-2">@nammabrew</p>
               </div>

@@ -2,7 +2,7 @@
 
 # ☕ Namma Brew (ನಮ್ಮ ಬ್ರೂ)
 ### *ನಮ್ಮ ಕಾಫಿ. ನಮ್ಮ ವೈಬ್. (Our Coffee. Our Vibe.)*
-#### 🌟 An Open-Source Project by [RootNode Rebels Team](https://github.com/RootNode-Rebels)
+#### 🌟 An Open-Source Project by ❤️[RootNode Rebels Team](https://github.com/RootNode-Rebels)
 
 **The Autonomous AI Campaign Operating System for Modern Hyperlocal Food & Beverage Brands**
 

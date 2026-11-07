@@ -243,5 +243,5 @@ We create modern digital experiences, concurrent web systems, and autonomous AI-
 ---
 
 <div align="center">
-  <sub>Built with ❤️ by <b>RootNode Rebels Team</b> for Bengaluru's vibrant café culture. Powered by CampaignGuard AI.</sub>
+  <sub>Built with ❤️ by <b>RootNode Rebels Team😍</b> for Bengaluru's vibrant café culture. Powered by CampaignGuard AI.</sub>
 </div>
